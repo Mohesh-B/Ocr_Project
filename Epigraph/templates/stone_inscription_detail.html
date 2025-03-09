@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Stone Inscription Detail</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    // When the user clicks the button, reveal the segmentation details and hide the button.
+    function showSegmentation() {
+      document.getElementById('segmentation').style.display = 'block';
+      document.getElementById('extracted-text').style.display = 'block';
+      document.getElementById('extract-btn').style.display = 'none';
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('upload_image') }}">Demo</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <h1>Stone Inscription Detail</h1>
+    <div class="detail-container">
+      <!-- Display the full original image -->
+      <img class="detail-image" src="{{ url_for('static', filename='stoneinscriptions/images/' ~ detail.image) }}" alt="Stone Script">
+      
+      <!-- Button to reveal segmentation details -->
+      <button id="extract-btn" onclick="showSegmentation()">Segmentation Text Extraction</button>
+      
+      <!-- Segmented image (hidden initially) -->
+      <div id="segmentation" style="display: none;">
+        <h2>Segmented Image</h2>
+        <img class="detail-image" src="{{ url_for('static', filename='stoneinscriptions/segments/' ~ detail.ocr_image) }}" alt="Segmented Image">
+      </div>
+      
+      <!-- Extracted text (hidden initially) -->
+      <div id="extracted-text" style="display: none;">
+        <h2>Extracted Text</h2>
+        <pre>{{ detail.extracted_text }}</pre>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 All rights reserved.</p>
+  </footer>
+</body>
+</html>

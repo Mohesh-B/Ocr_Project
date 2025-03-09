@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="analysis-section">
+  <h1>Analysis for {{ filename }}</h1>
+  <img src="{{ image_url }}" alt="{{ filename }}" class="analysis-image">
+  
+  <div class="extracted-text-container">
+    <h2>Extracted Text</h2>
+    <pre>{{ extracted_text }}</pre>
+  </div>
+  
+  <div class="back-button">
+    <a href="{{ url_for('category', category_name=category_name) }}">Back to Gallery</a>
+  </div>
+</section>
+{% endblock %}

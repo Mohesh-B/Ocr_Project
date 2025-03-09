@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Epigraph Analysis</title>
+  <!-- Import a modern Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* General Body Styling */
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Header and Navigation Styling */
+    header {
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+    }
+    
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #444;
+    }
+    
+    nav {
+      margin-top: 10px;
+    }
+    
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 0;
+    }
+    
+    nav ul li a {
+      text-decoration: none;
+      color: #555;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    
+    nav ul li a:hover {
+      background: #e0e0e0;
+    }
+    
+    /* Main Content */
+    main {
+      padding: 20px;
+    }
+    
+    /* Marquee Container for rotating cards */
+    .marquee-container {
+      overflow: hidden;
+      width: 100%; 
+      margin: 30px 0;
+      padding: 0;
+    }
+    
+    /* Marquee holds two sets of three cards for a seamless continuous scroll */
+    .marquee {
+      display: flex;
+      /* Use a fixed gap in pixels between cards */
+      gap: 20px;
+      animation: marquee 10s linear infinite;
+    }
+    
+    /* Each Card: Increase overall dimensions so that they exactly fill the container.
+       Calculation: (100% - (2 * gap)) / 3. With gap = 20px, we use calc((100% - 40px) / 3) */
+    .card {
+      flex: 0 0 calc((100% - 40px) / 3);
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      overflow: hidden;
+      height: 350px; /* Increased overall height */
+    }
+    
+    .card img {
+      width: 100%;
+      height: 220px; /* Increased image height */
+      object-fit: cover;
+    }
+    
+    .card-description {
+      padding: 15px;
+    }
+    
+    .card-description p {
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+    
+    /* Keyframes for continuous leftward scrolling */
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    /* Footer Styling */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Epigraph Analysis</h1>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('palmscripts') }}">Palm Scripts</a></li>
+        <li><a href="{{ url_for('stoneinscriptions') }}">Stone Inscriptions</a></li>
+        <li><a href="{{ url_for('documents') }}">Handwritten Documents</a></li>
+        <li><a href="{{ url_for('indus') }}">Indus</a></li>
+        <li><a href="{{ url_for('upload_stone') }}">OCR for Stone Inscription</a></li> 
+
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Marquee container with continuously rotating clickable cards -->
+    <div class="marquee-container">
+      <div class="marquee">
+        <!-- First set of three cards -->
+        <a class="card" href="{{ url_for('indus') }}">
+          <img src="..\static\images\Landing\indus.jpg" alt="Indus Scripts">
+          <div class="card-description">
+            <p>1: Introduction to palm scripts.</p>
+            <p>2: Detailed study and analysis.</p>
+            <p>3: Historical context explained.</p>
+          </div>
+        </a>
+        <a class="card" href="{{ url_for('stoneinscriptions') }}">
+          <img src="..\static\images\Landing\copperplate.jpeg" alt="Stone Inscriptions">
+          <div class="card-description">
+            <p>1: Overview of stone inscriptions.</p>
+            <p>2: OCR analysis insights.</p>
+            <p>3: Translation details provided.</p>
+          </div>
+        </a>
+        <a class="card" href="{{ url_for('documents') }}">
+          <img src="..\static\images\Landing\Handwrite.jpg" alt="Hand written Documents">
+          <div class="card-description">
+            <p>1: Tamil Literature Heritage.</p>
+            <p>2: Comparative analysis.</p>
+            <p>3: Cultural significance discussed.</p>
+          </div>
+        </a>
+        
+        <!-- Duplicate set for seamless scrolling -->
+        <a class="card" href="{{ url_for('palmscripts') }}">
+          <img src="..\static\images\Landing\palm_carousel.jpg" alt="Palm Scripts">
+          <div class="card-description">
+            <p>1: Introduction to palm scripts.</p>
+            <p>2: Detailed study and analysis.</p>
+            <p>3: Historical context explained.</p>
+          </div>
+        </a>
+        <a class="card" href="{{ url_for('indus') }}">
+          <img src="..\static\images\Landing\indus.jpg" alt="Indus Scripts">
+          <div class="card-description">
+            <p>Line 1: Introduction to palm scripts.</p>
+            <p>Line 2: Detailed study and analysis.</p>
+            <p>Line 3: Historical context explained.</p>
+          </div>
+        </a>
+        <a class="card" href="{{ url_for('stoneinscriptions') }}">
+          <img src="..\static\images\Landing\copperplate.jpeg" alt="Stone Inscriptions">
+          <div class="card-description">
+            <p>Line 1: Overview of stone inscriptions.</p>
+            <p>Line 2: OCR analysis insights.</p>
+            <p>Line 3: Translation details provided.</p>
+          </div>
+        </a>
+        <a class="card" href="{{ url_for('documents') }}">
+          <img src="..\static\images\Landing\Handwrite.jpg" alt="Hand written Documents">
+          <div class="card-description">
+            <p>1: Tamil Literature Heritage.</p>
+            <p>2: Comparative analysis.</p>
+            <p>3: Cultural significance discussed.</p>
+          </div>
+        </a>
+        
+        <!-- Duplicate set for seamless scrolling -->
+        <a class="card" href="{{ url_for('palmscripts') }}">
+          <img src="..\static\images\Landing\palm_carousel.jpg" alt="Palm Scripts">
+          <div class="card-description">
+            <p>1: Introduction to palm scripts.</p>
+            <p>2: Detailed study and analysis.</p>
+            <p>3: Historical context explained.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+</main>
+  
+  <footer>
+    <p>&copy; 2025 All rights reserved.</p>
+  </footer>
+</body>
+</html>

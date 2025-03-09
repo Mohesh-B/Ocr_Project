@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="category-intro">
+  <h1>{{ categories[category_name].display_name }}</h1>
+  <p>Browse the collection of {{ categories[category_name].display_name|lower }}.</p>
+</section>
+
+<section class="grid-container">
+  {% for image in images %}
+  <div class="grid-item">
+    <a href="{{ url_for('analysis', category_name=category_name, filename=image.filename) }}">
+      <img src="{{ image.link }}" alt="{{ image.filename }}">
+      <div class="overlay">
+        <div class="text">{{ image.filename }}</div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

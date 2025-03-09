@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Palm Scripts</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('upload_image') }}">Demo</a></li>
+
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <h1>Palm Scripts</h1>
+    <div class="grid-container">
+      {% for script in palm_scripts %}
+      <div class="grid-item">
+        <a href="{{ url_for('palm_script_detail', script_id=script.id) }}">
+          <img src="{{ url_for('static', filename='palmscripts/images/' ~ script.filename) }}" alt="{{ script.description }}">
+          <p>{{ script.description }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 All rights reserved.</p>
+  </footer>
+</body>
+</html>

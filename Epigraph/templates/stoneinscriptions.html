@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Stone Inscriptions</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('palmscripts') }}">Palm Scripts</a></li>
+        <li><a href="{{ url_for('stoneinscriptions') }}">Stone Inscriptions</a></li>
+        <li><a href="{{ url_for('palmscripts') }}">Handwritten Documents</a></li>
+        <li><a href="{{ url_for('palmscripts') }}">Indus</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <h1>Stone Inscriptions</h1>
+    <div class="grid-container">
+      {% for inscription in stone_inscriptions %}
+      <div class="grid-item">
+        <a href="{{ url_for('stone_inscription_detail', inscription_id=inscription.id) }}">
+          <img src="{{ url_for('static', filename='stoneinscriptions/images/' ~ inscription.filename) }}" alt="{{ inscription.description }}">
+          <p>{{ inscription.description }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 All rights reserved.</p>
+  </footer>
+</body>
+</html>

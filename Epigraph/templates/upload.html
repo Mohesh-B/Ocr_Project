@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload PalmScript for OCR </title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .upload-container {
+            background: white;
+            padding: 20px;
+            margin: auto;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button {
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 25%;
+            font-size: 1rem;
+        }
+
+        .button:hover {
+            background: #218838;
+        }
+
+        .filename-text {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .image-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-container img {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .text-box {
+            background: #fff;
+            padding: 15px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .popup img {
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5%;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Transliteration Section */
+        .transliteration-container {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .transliteration-box {
+            width: 90%;
+            max-width: 600px;
+            height: 130px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            resize: vertical;
+        }
+
+        select {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        function showPopup(imgSrc) {
+            document.getElementById("popup-img").src = imgSrc;
+            document.getElementById("popup").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function displayFilename(input) {
+            const filename = input.files[0] ? input.files[0].name : "No file chosen";
+            document.getElementById("filename-text").innerText = "Selected file: " + filename;
+        }
+
+        function transliterateText() {
+            let text = document.getElementById("editable-text").value;
+            let language = document.getElementById("transliteration-language").value;
+
+            fetch(`/transliterate?text=${encodeURIComponent(text)}&lang=${language}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("transliteration-box").value = data.transliterated_text;
+                })
+                .catch(error => console.error("Error in transliteration:", error));
+        }
+    </script>
+
+</head>
+<body>
+    <h1>Upload Palmscripts for OCR</h1>
+
+    <div class="upload-container">
+        <form action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
+            <label for="file-upload" class="custom-file-upload">Choose File</label>
+            <input id="file-upload" type="file" name="file" required onchange="displayFilename(this)">
+            <p id="filename-text">No file chosen</p>
+            <button class="button" type="submit">Upload & Process</button>
+        </form>
+    </div>
+
+    {% if uploaded_filename %}
+        <div class="image-container">
+            <h2>Original Image (Click to Enlarge)</h2>
+            <img src="{{ url_for('static', filename='uploads/' + uploaded_filename) }}" onclick="showPopup(this.src)">
+        </div>
+    {% endif %}
+
+    {% if segmented_filename %}
+        <div class="image-container">
+            <h2>Segmented Image (Click to Enlarge)</h2>
+            <img src="{{ url_for('static', filename='segmented/' + segmented_filename) }}" onclick="showPopup(this.src)">
+        </div>
+    {% endif %}
+
+    {% if extracted_text %}
+        <div class="text-box">
+            <h2>Extracted Text</h2>
+            <textarea id="editable-text">{{ extracted_text }}</textarea>
+        </div>
+
+        <div class="transliteration-container">
+            <h2>Transliterate Text</h2>
+            <select id="transliteration-language">
+                <option value="hi">Hindi</option>
+                <option value="en">English</option>
+                <option value="ml">Malayalam</option>
+                <option value="te">Telugu</option>
+            </select>
+            <button class="button" onclick="transliterateText()">Transliterate</button>
+            <textarea id="transliteration-box" class="transliteration-box"></textarea>
+        </div>
+    {% endif %}
+
+    <div id="popup" class="popup" onclick="closePopup()">
+        <span class="popup-close">&times;</span>
+        <img id="popup-img">
+    </div>
+</body>
+</html>
